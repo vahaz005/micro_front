@@ -12,6 +12,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: SSH into EC2 and deploy
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -19,12 +20,26 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            
-            cd frontend
-            
-            git pull origin-https main
+            # Install git if not present
+            sudo apt-get update -y
+            sudo apt-get install -y git
 
-            
+            # Install bun
+            curl -fsSL https://bun.sh/install | bash
+            export BUN_INSTALL="$HOME/.bun"
+            export PATH="$BUN_INSTALL/bin:$PATH"
+
+            # Install pm2 globally
+            npm install -g pm2
+
+            # Clone repo if frontend folder doesn't exist, else pull
+            if [ ! -d "frontend" ]; then
+              git clone https://github.com/vahaz005/micro_front.git frontend
+            fi
+
+            cd frontend
+            git pull origin main
+
             bun install
             bun run build
 

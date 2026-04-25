@@ -22,9 +22,9 @@ jobs:
             
             cd frontend
             
-            git pull origin main
+            git pull origin-https main
 
-            cd frontend
+            
             bun install
             bun run build
 

@@ -14,7 +14,7 @@ export default function Home() {
       setResponse(null);
 
       const res = await fetch(
-        `http://YOUR_API_GATEWAY_URL/${service}`
+        `http://ad4902b9e30c742cbad7aac7e59210eb-998536365.ap-south-1.elb.amazonaws.com/${service}`
       );
 
       const data = await res.json();
